@@ -1,7 +1,6 @@
 use std::env;
 use std::fs::File;
 use std::io::Read;
-use std::iter::once;
 
 // separator (might be empty when it's first cell in the notebook), end_index
 type Cell<'a> = (&'a str, usize);
