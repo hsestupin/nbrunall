@@ -26,16 +26,9 @@ fn main() -> Result<(), std::io::Error> {
     }
 
     let mut cell_start = 0;
-    while let cell = find_next_cell(&text[cell_start..]) {
-        match cell {
-            Some((sep, cell_end)) => {
-                println!("Cell[\n{}\n]", &text[cell_start + sep.len()..cell_start + cell_end]);
-                cell_start += cell_end
-            }
-            None => {
-                return Ok(())
-            }
-        }
+    while let Some((sep, cell_end)) = find_next_cell(&text[cell_start..]) {
+        println!("Cell[\n{}\n]", &text[cell_start + sep.len()..cell_start + cell_end]);
+        cell_start += cell_end;
     }
 
     Ok(())
@@ -65,7 +58,7 @@ fn find_next_cell(text: &str) -> Option<Cell> {
 
 fn find_next_separator(text: &str) -> Option<usize> {
     let mut i = 0;
-    while let newline_sep_start = text[i..].find("\n#%%")? {
+    while let Some(newline_sep_start) = text[i..].find("\n#%%") {
         let sep_start = newline_sep_start + 1; // skip newline char
         let subtext = &text[sep_start..];
 
